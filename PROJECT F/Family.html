@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Family Portal</title>
+    <style>
+        /* Modern Login Page */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        
+        .login-page {
+            height: 100%;
+            background: url('IMG-20241217-WA0094.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            width: 350px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .login-title {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .login-input:focus {
+            border-color: #4a6fa5;
+            outline: none;
+        }
+        
+        .login-btn {
+            background: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: #3a5a8f;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            height: 20px;
+        }
+
+        /* Main Family Page */
+        .family-page {
+            display: none;
+            height: 100%;
+            background: url('IMG-20241108-WA0001.jpg') no-repeat center center;
+            background-size: cover;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .family-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .family-title {
+            font-size: 4rem;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 50px;
+            z-index: 10;
+            cursor: pointer;
+        }
+        
+        .emoji-buttons {
+            display: flex;
+            gap: 30px;
+            z-index: 10;
+        }
+        
+        .emoji-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        
+        .emoji-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Member Gallery Pages */
+        .gallery-page {
+            display: none;
+            height: 100%;
+            position: relative;
+            flex-direction: column;
+        }
+        
+        .gallery-header {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .gallery-title {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+        
+        .gallery-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .gallery-item {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+        
+        .back-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Fullscreen Image Viewer */
+        .fullscreen-viewer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .fullscreen-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-page" id="login-page">
+        <div class="login-box">
+            <h1 class="login-title">Family Portal</h1>
+            <input type="text" id="username" class="login-input" placeholder="Your Name">
+            <input type="password" id="password" class="login-input" placeholder="Password">
+            <button class="login-btn" id="login-btn">Enter</button>
+            <div class="error-message" id="error-message"></div>
+        </div>
+    </div>
+    
+    <!-- Main Family Page -->
+    <div class="family-page" id="family-page">
+        <div class="family-overlay"></div>
+        <h1 class="family-title">Our Beautiful Family</h1>
+        <div class="emoji-buttons">
+            <div class="emoji-btn" id="dad-btn">👨</div>
+            <div class="emoji-btn" id="mom-btn">👩</div>
+            <div class="emoji-btn" id="vanessa-btn">👧</div>
+            <div class="emoji-btn" id="maxwell-btn">👦</div>
+        </div>
+    </div>
+    
+    <!-- Dad's Gallery -->
+    <div class="gallery-page" id="dad-gallery">
+        <div class="gallery-header">
+            <h1 class="gallery-title">Dad's Gallery</h1>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-item" style="background-image: url('IMG-20241217-WA0087.jpg')" data-fullsize="IMG-20241217-WA0087.jpg"></div>
+            <div class="gallery-item" style="background-image: url('IMG-20241108-WA0010.jpg')" data-fullsize="IMG-20241108-WA0010.jpg"></div>
+            <div class="gallery-item" style="background-image: url('IMG-20241217-WA0025.jpg')" data-fullsize="IMG-20241217-WA0025.jpg"></div>
+            <div class="gallery-item" style="background-image: url('IMG-20241217-WA0039.jpg')" data-fullsize="IMG-20241217-WA0039.jpg"></div>
+        </div>
+        <button class="back-btn">Back to Family</button>
+    </div>
+    
+    <!-- Mom's Gallery -->
+    <div class="gallery-page" id="mom-gallery">
+        <div class="gallery-header">
+            <h1 class="gallery-title">Mom's Gallery</h1>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-item" style="background-image: url('IMG-20241215-WA0041.jpg')" data-fullsize="IMG-20241215-WA0041.jpg"></div>
+            <div class="gallery-item" style="background-image: url('IMG-20241215-WA0058.jpg')" data-fullsize="IMG-20241215-WA0058.jpg"></div>
+        </div>
+        <button class="back-btn">Back to Family</button>
+    </div>
+    
+    <!-- Vanessa's Gallery -->
+    <div class="gallery-page" id="vanessa-gallery">
+        <div class="gallery-header">
+            <h1 class="gallery-title">Vanessa's Gallery</h1>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-item" style="background-image: url('IMG-20241217-WA0112.jpg')" data-fullsize="IMG-20241217-WA0112.jpg"></div>
+            <div class="gallery-item" style="background-image: url('IMG-20250413-WA0002.jpg')" data-fullsize="IMG-20250413-WA0002.jpg"></div>
+            <div class="gallery-item" style="background-image: url('IMG-20250413-WA0000.jpg')" data-fullsize="IMG-20250413-WA0000.jpg"></div>
+        </div>
+        <button class="back-btn">Back to Family</button>
+    </div>
+    
+    <!-- Maxwell's Gallery -->
+    <div class="gallery-page" id="maxwell-gallery">
+        <div class="gallery-header">
+            <h1 class="gallery-title">Maxwell's Gallery</h1>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-item" style="background-image: url('IMG-20241217-WA0050.jpg')" data-fullsize="IMG-20241217-WA0050.jpg"></div>
+            <div class="gallery-item" style="background-image: url('IMG-20241217-WA0039.jpg')" data-fullsize="IMG-20241217-WA0039.jpg"></div>
+        </div>
+        <button class="back-btn">Back to Family</button>
+    </div>
+
+    <!-- Fullscreen Image Viewer -->
+    <div class="fullscreen-viewer" id="fullscreen-viewer">
+        <span class="close-btn" id="close-btn">&times;</span>
+        <img class="fullscreen-image" id="fullscreen-image" src="" alt="Fullscreen Image">
+    </div>
+
+    <script>
+        // Valid users and password
+        const validUsers = [
+            "Josephat Chomba",
+            "Cathrine Mumbi",
+            "Vanessa Wanjiku",
+            "Maxwell Chomba"
+        ];
+        const password = "Cj1234";
+        
+        // DOM elements
+        const loginPage = document.getElementById('login-page');
+        const familyPage = document.getElementById('family-page');
+        const loginBtn = document.getElementById('login-btn');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('error-message');
+        
+        // Gallery pages
+        const dadGallery = document.getElementById('dad-gallery');
+        const momGallery = document.getElementById('mom-gallery');
+        const vanessaGallery = document.getElementById('vanessa-gallery');
+        const maxwellGallery = document.getElementById('maxwell-gallery');
+        
+        // Fullscreen viewer elements
+        const fullscreenViewer = document.getElementById('fullscreen-viewer');
+        const fullscreenImage = document.getElementById('fullscreen-image');
+        const closeBtn = document.getElementById('close-btn');
+        
+        // Login function
+        loginBtn.addEventListener('click', function() {
+            const username = usernameInput.value.trim();
+            const enteredPassword = passwordInput.value.trim();
+            
+            if (validUsers.includes(username) && enteredPassword === password) {
+                // Successful login
+                loginPage.style.display = 'none';
+                familyPage.style.display = 'flex';
+            } else {
+                // Failed login
+                errorMessage.textContent = 'Invalid name or password';
+                usernameInput.style.borderColor = '#e74c3c';
+                passwordInput.style.borderColor = '#e74c3c';
+            }
+        });
+        
+        // Allow login on Enter key
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+        
+        // Emoji button click handlers
+        document.getElementById('dad-btn').addEventListener('click', function() {
+            familyPage.style.display = 'none';
+            dadGallery.style.display = 'flex';
+        });
+        
+        document.getElementById('mom-btn').addEventListener('click', function() {
+            familyPage.style.display = 'none';
+            momGallery.style.display = 'flex';
+        });
+        
+        document.getElementById('vanessa-btn').addEventListener('click', function() {
+            familyPage.style.display = 'none';
+            vanessaGallery.style.display = 'flex';
+        });
+        
+        document.getElementById('maxwell-btn').addEventListener('click', function() {
+            familyPage.style.display = 'none';
+            maxwellGallery.style.display = 'flex';
+        });
+        
+        // Back button handler
+        document.querySelectorAll('.back-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                dadGallery.style.display = 'none';
+                momGallery.style.display = 'none';
+                vanessaGallery.style.display = 'none';
+                maxwellGallery.style.display = 'none';
+                familyPage.style.display = 'flex';
+            });
+        });
+        
+        // Gallery item click handler for fullscreen
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const imageSrc = this.getAttribute('data-fullsize');
+                fullscreenImage.src = imageSrc;
+                fullscreenViewer.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Close fullscreen viewer
+        closeBtn.addEventListener('click', function() {
+            fullscreenViewer.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close fullscreen when clicking outside image
+        fullscreenViewer.addEventListener('click', function(e) {
+            if (e.target === fullscreenViewer) {
+                fullscreenViewer.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Preload all images
+        const images = [
+            'IMG-20241108-WA0001.jpg',
+            'IMG-20241217-WA0094.jpg',
+            'IMG-20241217-WA0087.jpg',
+            'IMG-20241108-WA0010.jpg',
+            'IMG-20241217-WA0025.jpg',
+            'IMG-20241217-WA0039.jpg',
+            'IMG-20241215-WA0041.jpg',
+            'IMG-20241215-WA0058.jpg',
+            'IMG-20241217-WA0112.jpg',
+            'IMG-20250413-WA0002.jpg',
+            'IMG-20250413-WA0000.jpg',
+            'IMG-20241217-WA0050.jpg'
+        ];
+        
+        images.forEach(img => {
+            new Image().src = img;
+        });
+    </script>
+</body>
+</html>
